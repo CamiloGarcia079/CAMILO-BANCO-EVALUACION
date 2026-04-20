@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Acme - Cuentas</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="app-body">
+    <nav class="apple-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="img/ChatGPT Image 10 abr 2026, 08_13_43 a.m..png" alt="Banco Acme" class="nav-logo-img">
+                <b>Banco Acme</b>.
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">≡</button>
+            <ul class="nav-links" id="mainNav">
+                <li><a href="#" data-target="resume" class="active">Resumen</a></li>
+                <li><a href="#" data-target="transactions">Transacciones</a></li>
+                <li><a href="#" data-target="deposit">Abonar</a></li>
+                <li><a href="#" data-target="withdraw">Retirar</a></li>
+                <li><a href="#" data-target="transfer">Transferir</a></li>
+                <li><a href="#" data-target="topup">Recargas</a></li>
+                <li><a href="#" data-target="services">Servicios</a></li>
+                <li><a href="#" data-target="savings">Metas</a></li>
+                <li><a href="#" data-target="certificate">Descargas</a></li>
+            </ul>
+            <div class="nav-user">
+                <span id="userAvatar" class="avatar-mini">AC</span>
+                <span id="userNameDisplay" class="user-name">Usuario</span>
+                <button id="logoutBtn" class="btn-logout">Salir</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="app-main">
+        <div class="page-header">
+            <h1 id="pageTitle" class="hero-title">Resumen Financiero</h1>
+        </div>
+
+        <div class="content-wrapper">
+
+            <!-- ===================== RESUMEN ===================== -->
+            <section id="resume" class="view-section active">
+                <div class="balance-showcase">
+                    <div class="balance-ring">
+                        <p class="balance-label">Total Disponible</p>
+                        <h2 id="currentBalance" class="balance-amount">$0.00</h2>
+                    </div>
+                    <div class="balance-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Bóveda N°</span>
+                            <strong id="accountNumberDisplay" class="acc-num-label">...</strong>
+                        </div>
+                        <div class="meta-divider"></div>
+                        <div class="meta-item">
+                            <span class="meta-label">Registro</span>
+                            <strong id="creationDateDisplay">...</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Widget tasas de cambio -->
+                <div class="panel mt-4" style="margin-top: 2rem;">
+                    <div class="panel-header">
+                        <h3>Tasas de Cambio en Vivo 🌎</h3>
+                        <span id="tasasStatus" class="type-badge type-retiro">Cargando... ⏳</span>
+                    </div>
+                    <div id="tasasContainer" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;"></div>
+                </div>
+            </section>
+
+            <!-- ===================== HISTORIAL ===================== -->
+            <section id="transactions" class="view-section">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Flujo de Transferencias</h3>
+                        <div style="display: flex; gap: 1rem;">
+                            <button id="exportCsvBtn" class="btn-link">Exportar CSV ↓</button>
+                            <button id="printTransactionsBtn" class="btn-link">Imprimir Documento</button>
+                        </div>
+                    </div>
+                    <div class="table-container printable" id="transactionsPrintArea">
+                        <table class="apple-table">
+                            <thead>
+                                <tr>
+                                    <th>Fechado</th>
+                                    <th>Ref ID</th>
+                                    <th>Vía</th>
+                                    <th>Motivo</th>
+                                    <th class="text-right">Montos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== DEPOSITAR ===================== -->
+            <section id="deposit" class="view-section">
+                <div class="panel center-panel">
+                    <h3>Depositario</h3>
+                    <p class="text-muted mb-4">Ingresa en la cartera <strong class="acc-num-label"></strong> propia.</p>
+                    <form id="depositForm" class="minimal-form">
+                        <div class="input-modern large-input">
+                            <input type="number" id="depositAmount" placeholder="0.00" min="1" required>
+                            <span>$</span>
+                        </div>
+                        <button type="submit" class="btn-premium full-w" style="margin-top: 1rem;">Cargar Efectivo</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ===================== RETIRAR ===================== -->
+            <section id="withdraw" class="view-section">
+                <div class="panel center-panel">
+                    <h3>Punto de Retiro</h3>
+                    <p class="text-muted mb-4">Descarga fondos hacia tus manos instantáneamente.</p>
+                    <form id="withdrawForm" class="minimal-form">
+                        <div class="input-modern large-input">
+                            <input type="number" id="withdrawAmount" placeholder="0.00" min="1" required>
+                            <span>$</span>
+                        </div>
+                        <button type="submit" class="btn-premium full-w" style="margin-top: 1rem; background-color: #ff3b30;">
+                            Descontar Límite
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ===================== TRANSFERIR (NUEVA) ===================== -->
+            <section id="transfer" class="view-section">
+                <div class="panel center-panel">
+                    <h3>Transferencia Bancaria</h3>
+                    <p class="text-muted mb-4">Envía fondos a otra cuenta Acme de forma inmediata.</p>
+                    
+                    <!-- Contenedor del Widget de Clave Dinámica -->
+                    <div id="dynamicTokenContainer"></div>
+
+                    <form id="transferForm" class="minimal-form">
+                        <div class="input-modern">
+                            <input
+                                type="text"
+                                id="transferAccount"
+                                placeholder="N° Cuenta destino (ACME-XXXXXXXX)"
+                                required
+                            >
+                        </div>
+                        <div class="input-modern large-input">
+                            <input type="number" id="transferAmount" placeholder="0.00" min="1" required>
+                            <span>$</span>
+                        </div>
+                        <div class="input-modern" style="margin-top: 0.5rem;">
+                            <input type="text" id="transferToken" placeholder="Ingresa tu Clave Dinámica (6 dígitos)" required maxlength="6" pattern="[0-9]{6}">
+                            <span class="input-hint" style="color: var(--primary-color);">Requerido por seguridad</span>
+                        </div>
+                        <button type="submit" class="btn-premium full-w" style="margin-top: 1rem;">
+                            Enviar Transferencia →
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ===================== RECARGAS TELEFONICAS ===================== -->
+            <section id="topup" class="view-section">
+                <div class="panel center-panel">
+                    <h3>Recargas Telefónicas</h3>
+                    <p class="text-muted mb-4">Selecciona el operador, ingresa la línea móvil y define el valor de la recarga.</p>
+                    <div class="info-card">
+                        <strong>Operadores disponibles</strong>
+                        <p>MovilNet, Amber Phone, Dynaphone y SkyPhone.</p>
+                    </div>
+                    <form id="topupForm" class="minimal-form">
+                        <div class="input-modern">
+                            <select id="topupOperator" required>
+                                <option value="" disabled selected>Selecciona un operador</option>
+                                <option value="MovilNet">MovilNet</option>
+                                <option value="Amber Phone">Amber Phone</option>
+                                <option value="Dynaphone">Dynaphone</option>
+                                <option value="SkyPhone">SkyPhone</option>
+                            </select>
+                        </div>
+                        <div class="input-modern">
+                            <input
+                                type="tel"
+                                id="topupPhone"
+                                placeholder="Número telefónico (10 dígitos)"
+                                inputmode="numeric"
+                                maxlength="10"
+                                pattern="[0-9]{10}"
+                                required
+                            >
+                            <span class="input-hint">Ingresa un número celular de 10 dígitos sin espacios ni símbolos.</span>
+                        </div>
+                        <div class="input-modern large-input">
+                            <input type="number" id="topupAmount" placeholder="0.00" min="1" required>
+                            <span>$</span>
+                        </div>
+                        <button type="submit" class="btn-premium full-w" style="margin-top: 1rem;">
+                            Realizar Recarga
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ===================== SERVICIOS ===================== -->
+            <section id="services" class="view-section">
+                <div class="panel center-panel">
+                    <h3>Centro de Pagaduría pública</h3>
+                    <p class="text-muted mb-4">Obligaciones externas respaldadas desde su balance total.</p>
+                    <form id="servicesForm" class="minimal-form">
+                        <div class="input-modern">
+                            <select id="serviceType" required>
+                                <option value="" disabled selected>Identificador a Pagar</option>
+                                <option value="Luz">Empresa Local Luz</option>
+                                <option value="Gas">Surtigas Municipal</option>
+                                <option value="Agu
+                                <option value="Telecom">Wifi y Teléfono</option>
+                            </select>
+                        </div>
+                        <div class="input-modern">
+                            <input type="text" id="serviceRef" placeholder="Cod referencial" required>
+                        </div>
+                        <div class="input-modern">
+                            <input type="number" id="serviceAmount" placeholder="Aporte $" min="1" required>
+                        </div>
+                        <button type="submit" class="btn-premium full-w" style="margin-top: 1rem;">Aplicar y Descontar</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ===================== METAS DE AHORRO (NUEVA) ===================== -->
+            <section id="savings" class="view-section">
+                <div class="panel center-panel">
+                    <h3>Metas de Ahorro</h3>
+                    <p class="text-muted mb-4">Define objetivos financieros y sigue tu progreso.</p>
+
+                    <!-- Formulario para crear meta -->
+                    <form id="goalForm" class="minimal-form" style="margin-bottom: 2rem;">
+                        <div class="input-modern">
+                            <input
+                                type="text"
+                                id="goalName"
+                                placeholder="Nombre de la meta (ej: Vacaciones)"
+                                required
+                            >
+                        </div>
+                        <div class="input-modern large-input">
+                            <input type="number" id="goalTarget" placeholder="0.00" min="1" required>
+                            <span>$</span>
+                        </div>
+                        <button type="submit" class="btn-premium full-w" style="margin-top: 1rem;">
+                            + Agregar Meta
+                        </button>
+                    </form>
+
+                    <!-- Aquí se renderizan las metas existentes -->
+                    <div id="goalsContainer"></div>
+                </div>
+            </section>
+
+            <!-- ===================== CERTIFICADO ===================== -->
+            <section id="certificate" class="view-section">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Pliego Garantista</h3>
+                        <button id="printCertBtn" class="btn-link">Obtener Anexo</button>
+                    </div>
+                    <div class="apple-cert printable" id="certificatePrintArea">
+                        <div class="cert-brand">Acme Bank Corporative.</div>
+                        <div class="cert-nit">Identidad NIT 100.999.001-A</div>
+                        <div class="cert-title">CERTIFICA INEQUIVOCAMENTE:</div>
+                        <div class="cert-content">
+                            Que el/la ciudadana <strong><span id="certName"></span></strong>, provista legalmente de un(a)
+                            <span id="certDocType"></span> Nro. <strong><span id="certDocNumber"></span></strong>,
+                            mantiene fondos reales albergados en nuestro poderío mercantil.
+                        </div>
+                        <div class="cert-grid">
+                            <div class="cg-item"><label>Categoría</label><span>Ahorros Plenos</span></div>
+                            <div class="cg-item"><label>Clave Lógica</label><strong id="certAccount"></strong></div>
+                            <div class="cg-item"><label>Cierre Oficial A Creado</label><span id="certDate"></span></div>
+                        </div>
+                        <div class="cert-footer-text">
+                            Expedido por motor automático Acme. Fecha del sistema online: <span id="certToday"></span>.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /content-wrapper -->
+    </main>
+
+    <!-- ===================== MODAL VOUCHER ===================== -->
+    <div id="printModal" class="apple-modal">
+        <div class="modal-card">
+            <button class="close-modal" id="closePrintModal">&times;</button>
+            <div id="printVoucherArea" class="printable voucher-area">
+                <div class="voucher-logo">BA</div>
+                <h3 style="font-weight:500; font-size:1.1rem; margin-bottom:1.5rem; letter-spacing:-0.02em;">
+                    Acuse de Operación Bancaria
+                </h3>
+                <div id="voucherDetails" class="voucher-details"></div>
+            </div>
+            <div class="modal-actions hide-on-print">
+                <button id="printVoucherBtn" class="btn-premium full-w" style="border-radius:980px;">
+                    Expedir Archivo Físico
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <script type="module" src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mBt = document.getElementById('mobileMenuBtn');
+            const nLx = document.getElementById('mainNav');
+            if (mBt && nLx) {
+                mBt.addEventListener('click', () => nLx.classList.toggle('active'));
+                nLx.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => nLx.classList.remove('active'));
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Acme - Registro</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="split-layout">
+    <div class="split-left">
+        <div class="brand">
+            <img src="img/ChatGPT Image 10 abr 2026, 08_13_43 a.m..png" alt="Banco Acme Logo" class="logo-img">
+            <h1>Banco Acme.</h1>
+            <p>Comienza tu nueva historia financiera con la mejor experiencia.</p>
+        </div>
+    </div>
+    <div class="split-right register-right">
+        <div class="auth-wrapper large-wrapper" id="registerFormContainer" style="max-width: 500px;">
+            <div class="auth-header">
+                <h2>Abrir Cuenta</h2>
+                <p class="text-muted">Desbloquea el poder de tu capital en minutos.</p>
+            </div>
+            <form id="registerForm" class="form-grid">
+                <div class="input-modern">
+                    <select id="docType" required>
+                        <option value="" disabled selected>Tipo Documento</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="TI">Tarjeta de Identidad</option>
+                    </select>
+                </div>
+                <div class="input-modern">
+                    <input type="text" id="docNumber" placeholder="Número Identificación" required minlength="8" pattern="\d*" inputmode="numeric">
+                    <small class="input-hint">Mínimo 8 números. Solo dígitos.</small>
+                </div>
+                <div class="input-modern">
+                    <input type="text" id="names" placeholder="Nombres" required oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')">
+                </div>
+                <div class="input-modern">
+                    <input type="text" id="surnames" placeholder="Apellidos" required oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')">
+                </div>
+                <div class="input-modern">
+                    <select id="gender" required>
+                        <option value="" disabled selected>Género</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        <option value="O">Otro</option>
+                    </select>
+                </div>
+                <div class="input-modern">
+                    <input type="tel" id="phone" placeholder="Teléfono Móvil" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+                <div class="input-modern full-width">
+                    <input type="email" id="email" placeholder="Correo Electrónico" required>
+                </div>
+                <div class="input-modern">
+                    <input type="text" id="city" placeholder="Ciudad" required oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')">
+                </div>
+                <div class="input-modern">
+                    <input type="text" id="address" placeholder="Dirección" required pattern=".*[a-zA-ZáéíóúÁÉÍÓÚñÑ].*" title="La dirección debe contener al menos una letra">
+                </div>
+                <div class="input-modern full-width">
+                    <input type="password" id="password" placeholder="Crea una contraseña segura" required minlength="7">
+                    <small class="input-hint">Mínimo 7 caracteres, incluyendo letras y números.</small>
+                </div>
+                
+                <div class="form-actions full-width" style="margin-top: 1rem;">
+                    <button type="submit" class="btn-premium w-100">Finalizar Registro <span class="arrow">→</span></button>
+                    <div class="auth-footer-modern mt-4">
+                        <p>¿Ya tienes cuenta? <a href="index.html">Inicia sesión</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="registerSuccess" class="auth-wrapper hidden text-center" style="max-width: 400px; margin: auto;">
+            <div class="logo-icon mx-auto mb-4" style="background: linear-gradient(135deg, #34c759, #30b151); box-shadow: 0 10px 30px rgba(52,199,89,0.3); display: flex; justify-content: center; align-items: center; color: white; font-size: 1.5rem; font-weight: bold;">✓</div>
+            <h2 style="font-weight: 700; margin-bottom: 0.5rem; font-size: 1.8rem;">¡Tu cuenta está lista!</h2>
+            <p class="text-muted mb-4">Todo salió perfecto. Aquí tienes los detalles.</p>
+            <div style="background: #f5f5f7; border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem;">
+                <p style="font-size: 0.9rem; color: #86868b; text-transform: uppercase; font-weight: 600; margin-bottom: 0.5rem;">N° de Cuenta</p>
+                <p><strong style="font-size: 1.5rem; color: #1d1d1f;" id="summaryAccount"></strong></p>
+                <div style="height: 1px; background: #e8e8ed; margin: 1rem 0;"></div>
+                <p style="font-size: 0.85rem; color: #86868b;">Fecha oficial: <span id="summaryDate" style="color: #1d1d1f; font-weight: 500;"></span></p>
+            </div>
+            <a href="index.html" class="btn-premium full-w" style="text-decoration: none;">Comenzar a usarla</a>
+        </div>
+    </div>
+    <div id="toastContainer"></div>
+    <script type="module" src="js/register.js"></script>
+</body>
+</html>
