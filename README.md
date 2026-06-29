@@ -1,39 +1,85 @@
-Proyecto Banco Acme (JavaScript)
-Este repositorio contiene la solución al caso práctico del Banco Acme, una plataforma web para la autogestión de cuentas bancarias de los clientes. Ha sido construida completamente en HTML, Vanilla CSS y Vanilla JS, sin dependencias de frameworks externos.
+# 🏦 Banco ACME — Plataforma de banca web
 
-Funcionalidades Completadas
-Inicio de Sesión:
-Validación de credenciales locales.
-Redirección funcional tras iniciar sesión correctamente.
-Registro de Usuario:
-Formulario completo con validaciones nativas y explícitas.
-Asignación de número de cuenta automatizado y fecha de creación al registrarse.
-Recuperación de Contraseña:
-Verificación de identidad estricta y cambio de credenciales de seguridad desde las interfaces del cliente.
-Dashboard y Resumen de Cuenta:
-Panel informativo principal. Permite la visualización global del saldo actual, número de cuenta y fecha de apertura presentados en un diseño de Cards UI.
-Manejo de Transacciones:
-Consignación Electrónica: Suma valor al saldo final y registra contablemente en los repositorios del navegador de forma segura.
-Retiros de Dinero: Resta valor al saldo (incluye bloqueos por insuficiencia de fondos frente a montos irreales).
-Pago de Servicios Públicos: Permite elegir e iterar sobre los tipos de servicios integrados disminuyendo el balance y generando una referencia alfanumérica única.
-Historial Operativo:
-Visualización ordenada descendente (Nuevas a antiguas) de las últimas 10 transacciones.
-Incluye formato de moneda local y distinciones por colores según la entrada/salida del capital de la cuenta.
-Certificado Bancario:
-Documento dinámico del certificado con los datos en vivo para su expedición inmediata mediante utilidades de impresión nativa.
-Comprobantes y Alertas de Transacción:
-Al generarse una operación (sea esta exitosa o errónea), se ejecutan notificaciones estilo "Toast" estéticas que retroalimentan al usuario.
-Todo movimiento genera en pantalla un recibo/voucher con detalles estructurados (fecha, titular, valores) listos para guardarse en PDF o ser impresos.
-Persistencia de Datos:
-Utilización de la JSON Data Store Architecture adaptada para los motores integrados del navegador (localStorage), satisfaciendo de este modo el principal pilar del requisito de la evaluación técnica.
-Guía de Despliegue y Ejecución
-Clonar el repositorio completo dentro de sus gestores locales.
-Servir el archivo inicial (index.html) por medio de un host local (Recomendado utilizar "Live Server" desde Visual Studio Code).
-Paso 1, Nuevo Registro: Obligatorio como un primer paso, dirigirse desde el formulario principal al menú inferior de "Crear cuenta", rellenar los datos fielmente.
-Paso 2, Iniciar Sesión: Ingresar el tipo de documento exacto y la identificación y la contraseña utilizada.
-Iniciar la evaluación navegando por el entorno del Dashboard interactivo. (Es necesario primero realizar una consignación de fondos exitosa y posterior testear los métodos abstractos de retiros y pagos).
-Características Técnicas Aplicadas
-Vanilla ES Modules: Uso adecuado de prácticas modernas de Clean Code que particionan el sistema en módulos reusables (js/storage.js, js/auth.js, etc.).
-Patrones de Diseño UI Contemporáneos: Implementación de Grids escalables y estilización unificada que prescinde de frameworks voluminosos obteniendo alto rendimiento y Responsive Design total.
-Glassmorphism Theme Style: Implementación y despliegue del estilo visual Glassmorphism lo que brinda elegancia, modernismo y credibilidad acorde al nivel institucional de "Banco Acme".
-Autores: Andrés Felipe Guerra | Camilo Andrés Garcia
+Plataforma web para la autogestión de cuentas bancarias, construida **completamente en HTML, CSS y JavaScript puro (Vanilla JS)**, sin frameworks. El cliente puede registrarse, iniciar sesión y operar su cuenta como en un banco real: consignar, retirar, transferir, pagar servicios, fijar metas de ahorro y consultar su historial, todo con persistencia en el navegador.
+
+> Proyecto desarrollado en equipo junto a **Andrés Felipe Guerra**.
+
+---
+
+## ¿Qué hace?
+
+Es una banca digital funcional de principio a fin:
+
+- **Autenticación completa:** registro con validaciones, inicio de sesión y recuperación de contraseña. Al registrarse se asigna número de cuenta y fecha de apertura automáticamente.
+- **Dashboard:** resumen del saldo, número de cuenta y fecha de apertura en un diseño de *cards*.
+- **Transacciones:** consignaciones, retiros (con bloqueo por fondos insuficientes) y pago de servicios públicos con referencia única.
+- **Transferencias** entre cuentas.
+- **Metas de ahorro:** el usuario define objetivos y hace seguimiento.
+- **Historial:** las últimas 10 operaciones, ordenadas de más reciente a más antigua, con formato de moneda y colores según entrada o salida de dinero.
+- **Certificado bancario** dinámico, listo para imprimir.
+- **Comprobantes y notificaciones:** cada operación genera un *voucher* imprimible y notificaciones tipo *toast*.
+- **Tasas de cambio en vivo**, calculadas en segundo plano con un *Web Worker* para no bloquear la interfaz.
+
+---
+
+## 🛠️ Tecnologías
+
+| Herramienta | Para qué se usa |
+|-------------|-----------------|
+| **HTML5** | Estructura de las vistas (login, registro, dashboard…) |
+| **CSS3** | Diseño responsive con estilo *glassmorphism* |
+| **JavaScript (Vanilla, ES Modules)** | Toda la lógica del banco, en módulos reusables |
+| **Web Workers** | Cálculo de tasas de cambio sin congelar la interfaz |
+| **localStorage** | Persistencia de usuarios, saldos y movimientos |
+
+---
+
+## 🧩 Arquitectura
+
+El código está dividido en **módulos de JavaScript** con responsabilidades claras, en lugar de un solo archivo gigante:
+
+```
+js/
+├── auth.js              → inicio de sesión
+├── register.js          → registro de usuarios
+├── forgot.js            → recuperación de contraseña
+├── dashboard.js         → panel principal
+├── storage.js           → persistencia en localStorage
+├── ui.js                → lógica de interfaz y componentes
+├── 1_export_csv.js      → exportar movimientos a CSV
+├── 2_transferencias.js  → transferencias entre cuentas
+├── 3_metas_ahorro.js    → metas de ahorro
+├── 4_notificaciones.js  → notificaciones tipo toast
+├── 5_web_worker.js      → integración del web worker
+├── 6_clave_dinamica.js  → clave dinámica de seguridad
+└── workers/exchangeWorker.js → cálculo de tasas en segundo plano
+```
+
+Separar la lógica en módulos hace el proyecto más fácil de mantener y de entender, aplicando buenas prácticas de *clean code*.
+
+---
+
+## 🚀 Cómo ejecutarlo
+
+1. Clonar el repositorio.
+2. Servir el `index.html` con un servidor local (recomendado **Live Server** de VS Code), ya que el proyecto usa ES Modules.
+3. **Crear una cuenta** desde "Registrarse" y llenar los datos.
+4. **Iniciar sesión** con el documento y la contraseña registrados.
+5. Hacer una consignación y luego probar retiros, transferencias, pagos y metas de ahorro desde el dashboard.
+
+---
+
+## 📚 Destacados técnicos
+
+- **JavaScript modular (ES Modules)** en vez de un único archivo, pensando en mantenibilidad.
+- **Web Workers** para tareas en segundo plano sin afectar la fluidez.
+- **Diseño responsive** con tema *glassmorphism*, sin frameworks.
+- **Persistencia real** de datos entre sesiones con localStorage.
+
+---
+
+## 👤 Autores
+
+**Camilo Andrés García Almeida** · **Andrés Felipe Guerra**
+Estudiantes de Desarrollo de Software — Campuslands
+[GitHub](https://github.com/CamiloGarcia079) · [LinkedIn](https://www.linkedin.com/in/camilo-garcia-7570693b7/)
